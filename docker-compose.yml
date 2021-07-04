@@ -1,0 +1,9 @@
+version: "2.4"
+services:
+  linear:
+    build:
+      context: .
+      dockerfile: dockerfile.lr
+    runtime: nvidia
+    volumes:
+      - .:/app

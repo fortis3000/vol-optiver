@@ -1,0 +1,11 @@
+from tensorflow/tensorflow:2.4.1-gpu
+
+COPY ./requirements.in /app/requirements.in
+
+WORKDIR /app
+
+RUN pip install pip-tools
+RUN pip-compile
+RUN pip install -r requirements.txt
+
+ENTRYPOINT [ "python", "-m", "linear.main"]
