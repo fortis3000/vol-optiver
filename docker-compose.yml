@@ -7,3 +7,24 @@ services:
     runtime: nvidia
     volumes:
       - .:/app
+  lgbm:
+    build:
+      context: .
+      dockerfile: dockerfile.lgbm
+    runtime: nvidia
+    volumes:
+      - .:/app
+  lgbm_cv:
+    build:
+      context: .
+      dockerfile: dockerfile.lgbm_cv
+    runtime: nvidia
+    volumes:
+      - .:/app
+  lgbm_kfold:
+    build:
+      context: .
+      dockerfile: dockerfile.lgbm_kfold
+    runtime: nvidia
+    volumes:
+      - .:/app
