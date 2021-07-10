@@ -1,17 +1,16 @@
 import os
 import datetime as dt
+import json
 import yaml
 
 import random
 import numpy as np
-import tensorflow as tf
 
 
 def seed_everything(seed=42):
     random.seed(seed)
     os.environ["PYTHONHASHSEED"] = str(seed)
     np.random.seed(seed)
-    tf.random.set_seed(seed)
 
 
 def get_dt_str():
@@ -106,3 +105,19 @@ def reduce_mem_usage(props):
     print("Memory usage is: ", mem_usg, " MB")
     print("This is ", 100 * mem_usg / start_mem_usg, "% of the initial size")
     return props, NAlist
+
+
+def rmspe_np(y_true, y_pred):
+    """Root Mean Squared Percentage Error"""
+
+    return np.sqrt(
+        np.nanmean(
+            np.square((y_pred - y_true) / y_true)
+        )
+    )
+
+
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
