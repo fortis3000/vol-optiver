@@ -14,7 +14,13 @@ from sklearn.exceptions import ConvergenceWarning
 
 import lightgbm as lgb
 
-from helpers import load_config, get_dt_str, seed_everything, rmspe_np
+from helpers import (
+    load_config,
+    get_dt_str,
+    seed_everything,
+    rmspe_np,
+    rmspe_lgbm,
+)
 from logger import logger
 from features import get_book_features
 
@@ -42,9 +48,8 @@ seed_everything(config["SEED"])
 params = {
     "learning_rate": config["learning"]["LEARNING_RATE"],
     "random_state": config["SEED"],
-    "objective": "regression",
+    "objective": config["learning"]["objective"],
     "boosting": config["learning"]["boosting"],
-    "metric": config["learning"]["LEARN_METRICS_STRING"],
     "device": config["DEVICE"],
     "gpu_platform_id": 0,
     "gpu_device_id": 0,
@@ -100,6 +105,7 @@ if __name__ == "__main__":
 
     max_depth = int(np.sqrt(len(features)))
     num_leaves = 2 ** max_depth if max_depth <= 10 else 2 ** 10
+    params.update({"max_depth": max_depth, "num_leaves": num_leaves})
 
     logger.info("Start training")
 
@@ -110,6 +116,7 @@ if __name__ == "__main__":
         valid_names=["val"],
         categorical_feature="auto",
         early_stopping_rounds=100,
+        feval=rmspe_lgbm,
     )
 
     logger.info("Start predicting")

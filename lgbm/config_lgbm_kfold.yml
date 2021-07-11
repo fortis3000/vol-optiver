@@ -1,0 +1,3 @@
+KFOLD:
+  params_folder: "models/lgbm_cv_2021-07-10_14:17:12"
+  n_splits: 5

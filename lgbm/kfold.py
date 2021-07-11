@@ -26,15 +26,17 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 # Load configs
+CONFIG_KFOLD = "lgbm/config_lgbm_kfold.yml"
 CONFIG_FILE = "config.yml"
-CONFIG_FILE_LGBM = "lgbm/config_lgbm.yml"
+CONFIG_FILE_LGBM = "config_lgbm.yml"
 
-config = load_config(CONFIG_FILE)
-config.update(load_config(CONFIG_FILE_LGBM))
+config = load_config(CONFIG_KFOLD)
 
-PARAMS_FILE = os.path.join(
-    config["KFOLD"]["params_folder"], "params_optimal.json"
-)
+PARAMS_FODLER = config["KFOLD"]["params_folder"]
+PARAMS_FILE = os.path.join(PARAMS_FODLER, "params_optimal.json")
+
+config.update(load_config(os.path.join(PARAMS_FODLER, CONFIG_FILE)))
+config.update(load_config(os.path.join(PARAMS_FODLER, CONFIG_FILE_LGBM)))
 
 model_folder = os.path.join(
     config["MODEL_PATH"], "lgbm_kfold" + "_" + get_dt_str()
@@ -42,9 +44,9 @@ model_folder = os.path.join(
 
 os.mkdir(model_folder)
 shutil.copy2(r"lgbm/kfold.py", model_folder)
-shutil.copy2(CONFIG_FILE, model_folder)
-shutil.copy2(CONFIG_FILE_LGBM, model_folder)
+shutil.copy2(os.path.join(PARAMS_FODLER, CONFIG_FILE), model_folder)
 shutil.copy2(PARAMS_FILE, model_folder)
+shutil.copy2(CONFIG_KFOLD, model_folder)
 
 seed_everything(config["SEED"])
 
