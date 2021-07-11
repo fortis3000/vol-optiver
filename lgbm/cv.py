@@ -50,9 +50,8 @@ seed_everything(config["SEED"])
 FIT_PARAMS_CV = {
     "learning_rate": config["learning"]["LEARNING_RATE"],
     "random_state": config["SEED"],
-    "objective": "regression",
+    "objective": config["learning"]["objective"],
     "boosting": config["learning"]["boosting"],
-    "metric": config["learning"]["LEARN_METRICS_STRING"],
     "device": config["DEVICE"],
     "gpu_platform_id": 0,
     "gpu_device_id": 0,

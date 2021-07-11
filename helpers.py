@@ -110,11 +110,31 @@ def reduce_mem_usage(props):
 def rmspe_np(y_true, y_pred):
     """Root Mean Squared Percentage Error"""
 
-    return np.sqrt(
-        np.nanmean(
-            np.square((y_pred - y_true) / y_true)
-        )
-    )
+    return np.sqrt(np.nanmean(np.square((y_pred - y_true) / y_true)))
+
+
+def rmspe_lgbm(y_pred, dataset):
+    """Root Mean Squared Percentage Error for LightGBM
+    
+    Args:
+        y_pred (list or np.array):
+            Model predictions
+        train_data (lgb.Dataset):
+            Dataset to train or eval with.
+    Returns:
+        name: str,
+        eval_result: float,
+        is_higher_better: bool
+    
+    Example:
+        https://github.com/Microsoft/LightGBM/\
+            blob/master/examples/python-guide/advanced_example.py
+    """
+
+    y_true = dataset.get_label()
+    m = np.sqrt(np.nanmean(np.square((y_pred - y_true) / y_true)))
+
+    return "rmspe", m, False
 
 
 class NpEncoder(json.JSONEncoder):

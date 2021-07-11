@@ -1,5 +1,5 @@
 import lightgbm as lgb
-from helpers import rmspe_np
+from helpers import rmspe_np, rmspe_lgbm
 from logger import logger
 
 
@@ -19,6 +19,7 @@ def train_lgbm(
         valid_names=["val"],
         categorical_feature="auto",
         early_stopping_rounds=20,
+        feval=rmspe_lgbm,
     )
     return model
 

@@ -2,16 +2,13 @@
 DEVICE: gpu
 learning:
   HYPER_EVALS: 10
-  LEARNING_RATE: 0.01
-  LEARN_METRICS_STRING: mse # try rmsse
+  LEARNING_RATE: 1
+  objective: rmse
   LEARN_METRICS_TASK: min
   boosting: gbdt #gbdt #dart
-  N_JOBS: 4
-  N_ROUNDS: 1000
+  N_JOBS: -1
+  N_ROUNDS: 2000
 CV:
   n_splits: 5
   train_size: 0.8
   test_size: 0.2
-KFOLD:
-  params_folder: "models/lgbm_cv_2021-07-10_08:20:27"
-  n_splits: 5
